@@ -5,13 +5,65 @@
 	<title>
 		Document
 	</title>
-	<link rel="stylesheet" type="text/css" href="css/main.css">
+	
 </head>
+<style type="text/css">
+	.booth {
+	width: 400px;
+	background: #ccc;
+	border:10px solid #ddd;
+	margin: 0 auto;
+}
+
+@-webkit-keyframes rotate {
+	100% {
+		-webkit-transform:rotate(360deg);
+	}
+}
+
+
+#canvas {
+	-webkit-filter: sepia(100%);
+	filter: sepia(100%);
+	-webkit-animation: rotate 5s infinite linear;
+}
+</style>
 <body>
 <div class="booth">
 	<video id="video" width="400" height="300" autoplay></video>
 	<canvas id="canvas" width="400" height="300"></canvas>
 </div>
-<script src="js/video.js"></script>
+<script>
+	(function() {
+	var cavas = document.getElementById('canvas'),
+		context = canvas.getContext('2d'),
+		id = document.getElementById('video'),
+		vendorUrl = window.URL || window.webkitURL;
+
+	navigator.getMEdia = navigator.getUserMedia ||
+						 navigator.webkitGetUserMedia ||
+						 navigator.mozGetUserMedia ||
+						 navigator.msGetUserMedia;
+
+	navigator.getMEdia({
+		video: true,
+		audio: false
+	}, function(stream){
+		video.src = vendorUrl.createObjectURL(stream);
+		video.play();
+	}, function(error){
+
+	});
+
+	video.addEventListener('play', function() {
+		draw(this, context, 400, 300);
+	}, false);
+
+	function draw(video, context, width, height) {
+		context.drawImage(video, 0, 0, width, height);
+		setTimeout(draw, 10, video, context, width, height);
+	}
+})();
+</script>
 </body>
 </html>
